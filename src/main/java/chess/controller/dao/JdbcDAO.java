@@ -10,40 +10,41 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
-public class JdbcDAO implements ChessDAO{
-
-    public JdbcDAO() {
-    }
+public class JdbcDAO implements ChessDAO {
 
     @Override
     public void saveGame(ChessGame chessGame) {
 
-        final Board board = chessGame.board();
+        final var query = "INSERT INTO chessGame VALUES(?, ?, ?, ?, ?)";
 
-        for (File file : File.values()) {
-            for (Rank rank : Rank.values()) {
+        try (final var connection = Loader.getConnection();
+             final var preparedStatement = connection.prepareStatement(query)) {
 
-                final var query = "INSERT INTO chessGame VALUES(?, ?, ?, ?, ?)";
+            final Board board = chessGame.board();
 
-                Position position = new Position(file, rank);
-                Square square = board.getSquare(position);
-                Piece piece = square.getPiece();
-                Color color = piece.getColor();
-                Kind kind = piece.getKind();
-                Class<?> pieceClass = piece.getClass();
+            for (File file : File.values()) {
+                for (Rank rank : Rank.values()) {
 
-                try (final var connection = Loader.getConnection();
-                        final var preparedStatement = connection.prepareStatement(query)) {
+                    Position position = new Position(file, rank);
+                    Square square = board.getSquare(position);
+                    Piece piece = square.getPiece();
+                    Color color = piece.getColor();
+                    Kind kind = piece.getKind();
+                    Class<?> pieceClass = piece.getClass();
+
                     preparedStatement.setString(1, file.name());
                     preparedStatement.setString(2, rank.name());
                     preparedStatement.setString(3, color.name());
                     preparedStatement.setString(4, kind.name());
                     preparedStatement.setString(5, pieceClass.getName());
-                    preparedStatement.executeUpdate();
-                } catch (final SQLException e) {
-                    throw new RuntimeException(e);
+
+                    preparedStatement.addBatch();
                 }
             }
+
+            preparedStatement.executeBatch();
+        } catch (final SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -55,7 +56,7 @@ public class JdbcDAO implements ChessDAO{
         final var query = "SELECT * FROM chessGame";
 
         try (final var connection = Loader.getConnection();
-                final var preparedStatement = connection.prepareStatement(query)) {
+             final var preparedStatement = connection.prepareStatement(query)) {
 
             final var resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -65,13 +66,13 @@ public class JdbcDAO implements ChessDAO{
                 //Kind kind = Kind.valueOf(resultSet.getString("piece_kind"));
                 String className = resultSet.getString("class_name");
 
-                try{
+                try {
                     Class<?> pieceClass = Class.forName(className);
                     Constructor<?> pieceClassConstructor = pieceClass.getConstructor(Color.class);
                     Piece piece = (Piece) pieceClassConstructor.newInstance(color);
 
                     Square square = new Square(piece);
-                    Position position = new Position(squareFile ,squareRank);
+                    Position position = new Position(squareFile, squareRank);
                     board.set(position, square);
 
                 } catch (ClassNotFoundException | NoSuchMethodException |
@@ -98,7 +99,7 @@ public class JdbcDAO implements ChessDAO{
         final var query = "DELETE from chessGame";
 
         try (final var connection = Loader.getConnection();
-        final var preparedStatement = connection.prepareStatement(query)) {
+             final var preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.executeUpdate();
         } catch (final SQLException e) {
             throw new RuntimeException(e);
