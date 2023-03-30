@@ -15,7 +15,7 @@ public final class BlackPawn extends Pawn {
     }
 
     public BlackPawn(Color color) {
-        super(Color.WHITE);
+        super(color);
     }
 
     @Override
