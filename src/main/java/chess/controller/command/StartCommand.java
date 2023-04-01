@@ -1,25 +1,42 @@
 package chess.controller.command;
 
 import chess.controller.dao.JdbcDAO;
-import chess.controller.state.Start;
-import chess.controller.state.State;
 import chess.domain.ChessGame;
+import chess.domain.board.Board;
+import chess.domain.piece.Color;
+import chess.repository.ChessGameRepository;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class StartCommand implements Command {
+public class StartCommand extends AbstractCommand {
 
     private final String command = "start";
 
+    public StartCommand(ChessGame chessGame) {
+        super(chessGame);
+    }
+
     @Override
-    public State execute(Optional<ChessGame> chessGame, List<String> input) {
-        JdbcDAO jdbcDAO = new JdbcDAO();
-        ChessGame previousChessGame = jdbcDAO.select();
-        if (previousChessGame == null) {
-            return new Start();
+    public void execute(String input) {
+
+        List<String> inputs = Arrays.stream(input.split(" "))
+                .collect(Collectors.toList());
+
+        ChessGameRepository chessGameRepository = new ChessGameRepository(new JdbcDAO());
+
+        String userName = inputs.get(1);
+
+        if (chessGameRepository.hasGame(userName)) {
+            Board board = chessGameRepository.findBoardByUserName(userName);
+            Color color = chessGameRepository.findTurnByUserName(userName);
+
+            chessGame.start(board, color, userName);
+            return;
         }
-        return new Start(previousChessGame);
+
+        chessGame.start(userName);
     }
 
     @Override

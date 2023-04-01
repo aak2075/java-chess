@@ -1,9 +1,11 @@
 package chess.controller;
 
-import chess.controller.state.Ready;
-import chess.controller.state.State;
+import chess.controller.command.*;
+import chess.domain.ChessGame;
 import chess.view.InputView;
 import chess.view.OutputView;
+
+import java.util.List;
 
 public final class ChessController {
 
@@ -15,10 +17,21 @@ public final class ChessController {
         this.outputView = outputView;
     }
 
-    public void play() {
-        State state = new Ready().execute(inputView, outputView);
-        while (state.isRunning()) {
-            state = state.execute(inputView, outputView);
+    public void play(final ChessGame chessGame) {
+        Commands commands = new Commands(List.of(
+                new StartCommand(chessGame),
+                new MoveCommand(chessGame),
+                new StatusCommand(chessGame),
+                new EndCommand(chessGame)
+        ));
+
+        outputView.startMessage();
+        while (true) {
+            String input = inputView.inputCommand();
+            Command command = commands.findCommand(input);
+            command.execute(input);
+
+            if (command.getCommand().equals("end")) return;
         }
     }
 }

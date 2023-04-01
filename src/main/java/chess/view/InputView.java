@@ -14,10 +14,7 @@ public final class InputView {
         this.scanner = scanner;
     }
 
-    public List<String> inputCommand() {
-        String input = scanner.nextLine();
-        return Arrays.stream(input.split(DELIMITER))
-                .map(String::strip)
-                .collect(Collectors.toList());
+    public String inputCommand() {
+        return scanner.nextLine();
     }
 }

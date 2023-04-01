@@ -1,19 +1,24 @@
 package chess.controller.command;
 
-import chess.controller.state.End;
-import chess.controller.state.State;
+import chess.controller.dao.JdbcDAO;
 import chess.domain.ChessGame;
+import chess.domain.board.Board;
+import chess.repository.ChessGameRepository;
 
-import java.util.List;
-import java.util.Optional;
-
-public class EndCommand implements Command {
+public class EndCommand extends AbstractCommand {
 
     private final String command = "end";
 
+    public EndCommand(ChessGame chessGame) {
+        super(chessGame);
+    }
+
     @Override
-    public State execute(Optional<ChessGame> chessGame, List<String> input) {
-        return new End(chessGame.orElseThrow(() -> new IllegalArgumentException("체스 게임이 없습니다.")));
+    public void execute(String input) {
+        Board board = chessGame.getBoard();
+        ChessGameRepository chessGameRepository = new ChessGameRepository(new JdbcDAO());
+
+        chessGameRepository.saveGame(board, chessGame.getUserName(), chessGame.getTurn());
     }
 
     @Override

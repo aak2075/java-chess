@@ -1,5 +1,6 @@
 package chess.controller.command;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -15,6 +16,9 @@ public class Commands {
     }
 
     public Command findCommand(String input) {
-        return commands.getOrDefault(input, new IllegalCommand());
+        List<String> inputs = Arrays.stream(input.split(" "))
+                .collect(Collectors.toList());
+
+        return commands.getOrDefault(inputs.get(0), new IllegalCommand());
     }
 }

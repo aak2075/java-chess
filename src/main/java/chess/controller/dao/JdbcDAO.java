@@ -1,45 +1,38 @@
 package chess.controller.dao;
 
-import chess.domain.ChessGame;
-import chess.domain.board.*;
-import chess.domain.piece.Color;
-import chess.domain.piece.Kind;
-import chess.domain.piece.Piece;
+import chess.controller.dao.entity.BoardEntity;
+import chess.controller.dao.entity.ChessGameEntity;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JdbcDAO implements ChessDAO {
 
     @Override
-    public void saveGame(ChessGame chessGame) {
+    public void saveBoard(int gameId, BoardEntity boardEntity) {
 
-        final var query = "INSERT INTO chessGame VALUES(?, ?, ?, ?, ?)";
+        final var query = "INSERT INTO board(game_id, class_name, piece_file, piece_rank, piece_color) VALUES(?, ?, ?, ?, ?)";
 
         try (final var connection = Loader.getConnection();
              final var preparedStatement = connection.prepareStatement(query)) {
 
-            final Board board = chessGame.board();
+            List<String> classNames = boardEntity.getClassNames();
+            List<String> squareFiles = boardEntity.getSquareFiles();
+            List<String> squareRanks = boardEntity.getSquareRanks();
+            List<String> pieceColors = boardEntity.getPieceColors();
 
-            for (File file : File.values()) {
-                for (Rank rank : Rank.values()) {
+            for (int i = 0, end = classNames.size(); i < end; i++) {
 
-                    Position position = new Position(file, rank);
-                    Square square = board.getSquare(position);
-                    Piece piece = square.getPiece();
-                    Color color = piece.getColor();
-                    Kind kind = piece.getKind();
-                    Class<?> pieceClass = piece.getClass();
+                preparedStatement.setInt(1, gameId);
+                preparedStatement.setString(2, classNames.get(i));
+                preparedStatement.setString(3, squareFiles.get(i));
+                preparedStatement.setString(4, squareRanks.get(i));
+                preparedStatement.setString(5, pieceColors.get(i));
 
-                    preparedStatement.setString(1, file.name());
-                    preparedStatement.setString(2, rank.name());
-                    preparedStatement.setString(3, color.name());
-                    preparedStatement.setString(4, kind.name());
-                    preparedStatement.setString(5, pieceClass.getName());
-
-                    preparedStatement.addBatch();
-                }
+                preparedStatement.addBatch();
             }
 
             preparedStatement.executeBatch();
@@ -49,60 +42,122 @@ public class JdbcDAO implements ChessDAO {
     }
 
     @Override
-    public ChessGame select() {
+    public ChessGameEntity selectChessGame(String userName) {
 
-        Board board = new Board();
-
-        final var query = "SELECT * FROM chessGame";
+        final var query = "SELECT game_id, user_name, game_turn FROM chess_game WHERE user_name = ?";
 
         try (final var connection = Loader.getConnection();
              final var preparedStatement = connection.prepareStatement(query)) {
 
-            final var resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                File squareFile = File.valueOf(resultSet.getString("square_file"));
-                Rank squareRank = Rank.valueOf(resultSet.getString("square_rank"));
-                Color color = Color.valueOf(resultSet.getString("piece_color"));
-                //Kind kind = Kind.valueOf(resultSet.getString("piece_kind"));
-                String className = resultSet.getString("class_name");
+            preparedStatement.setString(1, userName);
 
-                try {
-                    Class<?> pieceClass = Class.forName(className);
-                    Constructor<?> pieceClassConstructor = pieceClass.getConstructor(Color.class);
-                    Piece piece = (Piece) pieceClassConstructor.newInstance(color);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                    Square square = new Square(piece);
-                    Position position = new Position(squareFile, squareRank);
-                    board.set(position, square);
+            if (resultSet.next()) {
+                int gameId = resultSet.getInt("game_id");
+                String gameTurn = resultSet.getString("game_turn");
 
-                } catch (ClassNotFoundException | NoSuchMethodException |
-                         InstantiationException | IllegalAccessException |
-                         IllegalArgumentException | InvocationTargetException e) {
-                    throw new IllegalArgumentException(e.getMessage());
-                }
-
+                return new ChessGameEntity(gameId, userName, gameTurn);
             }
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException();
         }
 
-        return new ChessGame(board, Color.WHITE);
+        return null;
     }
 
     @Override
-    public void update() {
+    public void saveGame(ChessGameEntity chessGameEntity) {
+        final var query = "INSERT INTO chess_game(user_name, game_turn) values(?, ?)";
 
+        try (final var connection = Loader.getConnection();
+            final var preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, chessGameEntity.getUserName());
+            preparedStatement.setString(2, chessGameEntity.getGameTurn());
+
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException();
+        }
     }
 
     @Override
-    public void delete() {
-        final var query = "DELETE from chessGame";
+    public BoardEntity selectBoard(int gameId) {
+
+        final var query = "SELECT class_name, piece_file, piece_rank, piece_color FROM board WHERE game_id = ?";
+
+        List<String> classNames = new ArrayList<>();
+        List<String> pieceFiles = new ArrayList<>();
+        List<String> pieceRanks = new ArrayList<>();
+        List<String> pieceColors = new ArrayList<>();
 
         try (final var connection = Loader.getConnection();
              final var preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.executeUpdate();
-        } catch (final SQLException e) {
-            throw new RuntimeException(e);
+
+            preparedStatement.setInt(1, gameId);
+
+            ResultSet resultSet = preparedStatement.executeQuery(query);
+
+            while (resultSet.next()) {
+                classNames.add(resultSet.getString("class_name"));
+                pieceFiles.add(resultSet.getString("piece_file"));
+                pieceRanks.add(resultSet.getString("piece_rank"));
+                pieceColors.add(resultSet.getString("piece_color"));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+
+        return new BoardEntity(classNames, pieceFiles, pieceRanks, pieceColors);
+    }
+
+    @Override
+    public void updateBoard(final int gameId, final BoardEntity boardEntity) {
+
+        final var query = "UPDATE board SET class_name = ?, piece_file = ?, piece_rank = ?, piece_color = ? WHERE game_id = ?";
+
+        try (final var connection = Loader.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            List<String> classNames = boardEntity.getClassNames();
+            List<String> squareFiles = boardEntity.getSquareFiles();
+            List<String> squareRanks = boardEntity.getSquareRanks();
+            List<String> pieceColors = boardEntity.getPieceColors();
+
+            for (int i = 0, end = classNames.size(); i < end; i++) {
+
+                preparedStatement.setString(1, classNames.get(i));
+                preparedStatement.setString(2, squareFiles.get(i));
+                preparedStatement.setString(3, squareRanks.get(i));
+                preparedStatement.setString(4, pieceColors.get(i));
+                preparedStatement.setInt(5, gameId);
+
+                preparedStatement.addBatch();
+            }
+
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void updateGame(ChessGameEntity chessGameEntity) {
+
+        final var query = "UPDATE chess_game SET game_turn = ? WHERE game_id = ?";
+
+        try (final var connection = Loader.getConnection();
+        final var preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, chessGameEntity.getGameTurn());
+            preparedStatement.setInt(2, chessGameEntity.getGameId());
+
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException();
         }
     }
 }

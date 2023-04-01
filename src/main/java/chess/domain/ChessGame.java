@@ -2,71 +2,67 @@ package chess.domain;
 
 import chess.domain.board.Board;
 import chess.domain.board.Position;
-import chess.domain.board.Squares;
 import chess.domain.piece.Color;
-
-import java.util.List;
+import chess.domain.state.Ready;
+import chess.domain.state.State;
 
 public final class ChessGame {
 
-    private Color turn;
-    private final Board board;
+    private State state;
+    private String userName;
 
     public ChessGame() {
-        this.board = new Board();
-        this.turn = Color.WHITE;
+        this.state = new Ready();
     }
 
-    public ChessGame(Board board, Color turn) {
-        this.board = board;
-        this.turn = turn;
+    public void start(String userName) {
+        state = state.start();
+        this.userName = userName;
     }
 
-    public void playTurn(Position source, Position target) {
-        board.play(source, target, turn);
-        this.turn = changeTurn();
+    public void start(Board board, Color color, String userName) {
+        state = state.start(board, color);
+        this.userName = userName;
     }
 
-    public boolean isKingDead() {
-        return board.isKingDead(turn);
+    public void move(Position source, Position target) {
+        state = state.move(source, target);
+    }
+
+    public void playTurn(Position source, Position target, Color turn) {
+        // board.play(source, target, turn);
+    }
+
+    public boolean isKingDead(Color turn) {
+        //  return board.isKingDead(turn);
+        return false;
     }
 
     public Color winner() {
-        if (calculateWhiteScore() > calculateBlackScore()) {
-            return Color.WHITE;
-        }
-
-        if (calculateWhiteScore() < calculateBlackScore()) {
-            return Color.BLACK;
-        }
-
-        return Color.NONE;
+        return state.winner();
     }
 
     public double calculateWhiteScore() {
-        return board.calculateTotalScore(Color.WHITE);
+        return state.calculateWhiteScore();
     }
 
     public double calculateBlackScore() {
-        return board.calculateTotalScore(Color.BLACK);
-    }
-
-    private Color changeTurn() {
-        if (turn.isBlack()) {
-            return Color.WHITE;
-        }
-        return Color.BLACK;
+        return state.calculateBlackScore();
     }
 
     public Color getTurn() {
-        return turn;
+        return state.getTurn();
     }
 
-    public List<Squares> getBoard() {
-        return board.getSquares();
+    public Board getBoard() {
+        return state.getBoard();
     }
 
-    public Board board() {
-        return board;
+    public boolean isFinished() {
+        return state.isFinished();
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }

@@ -1,14 +1,19 @@
 package chess.controller.dao;
 
-import chess.domain.ChessGame;
+import chess.controller.dao.entity.BoardEntity;
+import chess.controller.dao.entity.ChessGameEntity;
 
 public interface ChessDAO {
 
-    void saveGame(ChessGame chessGame);
+    void saveBoard(int gameId, BoardEntity boardEntity);
 
-    ChessGame select();
+    ChessGameEntity selectChessGame(String userName);
 
-    void update();
+    BoardEntity selectBoard(int gameId);
 
-    void delete();
+    void updateBoard(final int gameId, final BoardEntity boardEntity);
+
+    void saveGame(ChessGameEntity chessGameEntity);
+
+    void updateGame(ChessGameEntity chessGameEntity);
 }

@@ -1,20 +1,32 @@
 package chess.controller.command;
 
-import chess.controller.state.Move;
-import chess.controller.state.State;
+import chess.controller.PositionParser;
 import chess.domain.ChessGame;
+import chess.domain.board.Position;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class MoveCommand implements Command {
+public class MoveCommand extends AbstractCommand {
 
     private final String command = "move";
 
+    public MoveCommand(ChessGame chessGame) {
+        super(chessGame);
+    }
+
     @Override
-    public State execute(Optional<ChessGame> chessGame, List<String> input) {
-        return new Move(chessGame.orElseThrow(IllegalArgumentException::new),
-                input.get(1), input.get(2));
+    public void execute(String input) {
+        List<String> inputs = Arrays.stream(input.split(" "))
+                .collect(Collectors.toList());
+
+        // validate(input);
+
+        Position source = PositionParser.parse(inputs.get(1));
+        Position target = PositionParser.parse(inputs.get(2));
+
+        chessGame.move(source, target);
     }
 
     @Override
