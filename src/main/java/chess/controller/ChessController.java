@@ -1,6 +1,7 @@
 package chess.controller;
 
 import chess.controller.command.*;
+import chess.controller.state.BoardDTO;
 import chess.domain.ChessGame;
 import chess.view.InputView;
 import chess.view.OutputView;
@@ -30,6 +31,7 @@ public final class ChessController {
             String input = inputView.inputCommand();
             Command command = commands.findCommand(input);
             command.execute(input);
+            outputView.printBoard(new BoardDTO(chessGame.getBoard().getSquares()));
 
             if (command.getCommand().equals("end")) return;
         }
