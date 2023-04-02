@@ -48,7 +48,7 @@ public final class ChessController {
             command.execute(input);
 
             outputView.printBoard(BoardDTO.from(chessGame.getSquares()));
-            printIfPrintable(command);
+            printStatusIfPrintable(command);
         } catch (IllegalArgumentException e) {
             outputView.printErrorMessage(e);
             outputView.printInputAgainMessage();
@@ -56,7 +56,7 @@ public final class ChessController {
         }
     }
 
-    private void printIfPrintable(Command command) {
+    private void printStatusIfPrintable(Command command) {
 
         if (command.isPrintable()) {
             PrintableCommand printableCommand = (PrintableCommand) command;
