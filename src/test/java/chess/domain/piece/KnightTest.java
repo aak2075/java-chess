@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import static chess.domain.piece.PawnTest.B4;
-import static chess.domain.piece.PawnTest.E4;
-import static chess.domain.piece.QueenTest.*;
+import static chess.domain.board.Positions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

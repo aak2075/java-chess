@@ -7,16 +7,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static chess.domain.board.File.A;
-import static chess.domain.board.File.B;
-import static chess.domain.board.Rank.FIVE;
+import static chess.domain.board.Positions.A5;
+import static chess.domain.board.Positions.B5;
 import static chess.domain.board.Rank.TWO;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class EmptyTest {
-
-    private static final Position A5 = new Position(A, FIVE);
-    private static final Position B5 = new Position(B, FIVE);
 
     @Test
     @DisplayName("empty에서 computePath를 호출하면 예외가 발생한다")

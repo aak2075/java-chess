@@ -1,30 +1,13 @@
 package chess.domain.piece;
 
-import chess.domain.board.File;
-import chess.domain.board.Position;
-import chess.domain.board.Rank;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static chess.domain.piece.BishopTest.C5;
-import static chess.domain.piece.KingTest.C6;
+import static chess.domain.board.Positions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class QueenTest {
-
-    public static final Position A3 = new Position(File.A, Rank.THREE);
-    public static final Position B2 = new Position(File.B, Rank.TWO);
-    public static final Position B3 = new Position(File.B, Rank.THREE);
-    public static final Position C3 = new Position(File.C, Rank.THREE);
-    public static final Position C4 = new Position(File.C, Rank.FOUR);
-    public static final Position D4 = new Position(File.D, Rank.FOUR);
-    public static final Position E5 = new Position(File.E, Rank.FIVE);
-    public static final Position F6 = new Position(File.F, Rank.SIX);
-    public static final Position F3 = new Position(File.F, Rank.THREE);
-    public static final Position D3 = new Position(File.D, Rank.THREE);
-    public static final Position E3 = new Position(File.E, Rank.THREE);
-    public static final Position H7 = new Position(File.H, Rank.SEVEN);
 
     @DisplayName("대각선에 있으면 이동경로에 포함된다")
     @Test

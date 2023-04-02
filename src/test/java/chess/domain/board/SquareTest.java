@@ -33,7 +33,7 @@ class SquareTest {
     @Test
     void pieceKind_king_true() {
         final var square = new Square(new King(Color.WHITE));
-        
+
         assertThat(square.pieceKind()).isEqualTo(Kind.KING);
     }
 }

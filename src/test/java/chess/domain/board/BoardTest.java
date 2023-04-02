@@ -13,7 +13,7 @@ class BoardTest {
     @DisplayName("file1에 whitePawn이 1개이면 전체는 38점")
     @Test
     void calculateFileScore() {
-       var board = new Board();
+        var board = new Board();
 
         System.out.println("white : " + board.calculateTotalScore(Color.WHITE));
 

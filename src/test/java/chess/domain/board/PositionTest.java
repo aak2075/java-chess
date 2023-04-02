@@ -3,15 +3,10 @@ package chess.domain.board;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static chess.domain.board.Positions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PositionTest {
-
-    public static final Position B4 = new Position(File.B, Rank.FOUR);
-    public static final Position B6 = new Position(File.B, Rank.SIX);
-    public static final Position C5 = new Position(File.C, Rank.FIVE);
-    public static final Position A7 = new Position(File.A, Rank.SEVEN);
-    public static final Position E7 = new Position(File.E, Rank.SEVEN);
 
     @Test
     @DisplayName("파일이 같으면 true를 반환한다.")

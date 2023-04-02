@@ -1,33 +1,15 @@
 package chess.domain.piece;
 
-import chess.domain.board.File;
-import chess.domain.board.Position;
-import chess.domain.board.Rank;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+import static chess.domain.board.Positions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 class PawnTest {
-
-    public static final Position B5 = new Position(File.B, Rank.FIVE);
-    public static final Position A4 = new Position(File.A, Rank.FOUR);
-    public static final Position A5 = new Position(File.A, Rank.FIVE);
-    public static final Position B6 = new Position(File.B, Rank.SIX);
-    public static final Position B2 = new Position(File.B, Rank.TWO);
-    public static final Position B4 = new Position(File.B, Rank.FOUR);
-    public static final Position B7 = new Position(File.B, Rank.SEVEN);
-    public static final Position B3 = new Position(File.B, Rank.THREE);
-    public static final Position E4 = new Position(File.E, Rank.FOUR);
-    public static final Position C2 = new Position(File.C, Rank.TWO);
-    public static final Position C3 = new Position(File.C, Rank.THREE);
-    public static final Position C4 = new Position(File.C, Rank.FOUR);
-    public static final Position C5 = new Position(File.C, Rank.FIVE);
-    public static final Position C6 = new Position(File.C, Rank.SIX);
-    public static final Position D5 = new Position(File.D, Rank.FIVE);
 
     @Test
     @DisplayName("폰은 전진할 경로에 기물이 없으면 이동할 수 있다.")
@@ -82,7 +64,7 @@ class PawnTest {
         final var target = C6;
 
         assertThatThrownBy(() -> pawn.canMoveWithValidate(
-                Map.of(A5, false, B5,false, C6, true),
+                Map.of(A5, false, B5, false, C6, true),
                 source,
                 target)
         ).isInstanceOf(IllegalArgumentException.class);
