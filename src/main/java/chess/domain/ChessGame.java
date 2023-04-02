@@ -32,15 +32,6 @@ public final class ChessGame {
         state = state.move(source, target);
     }
 
-    public void playTurn(Position source, Position target, Color turn) {
-        // board.play(source, target, turn);
-    }
-
-    public boolean isKingDead(Color turn) {
-        //  return board.isKingDead(turn);
-        return false;
-    }
-
     public Color winner() {
         return state.winner();
     }
