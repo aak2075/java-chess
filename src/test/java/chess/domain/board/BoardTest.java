@@ -1,8 +1,6 @@
 package chess.domain.board;
 
-import chess.view.BoardDTO;
 import chess.domain.piece.Color;
-import chess.view.OutputView;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +14,6 @@ class BoardTest {
         var board = new Board();
 
         System.out.println("white : " + board.calculateTotalScore(Color.WHITE));
-
-        new OutputView().printBoard(new BoardDTO(board.getSquares()));
 
         assertThat(board.calculateTotalScore(Color.WHITE)).isEqualTo(38);
     }

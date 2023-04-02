@@ -10,13 +10,17 @@ public class BoardDTO {
 
     private final List<List<String>> squares;
 
-    public BoardDTO(final List<Squares> board) {
+    private BoardDTO(final List<Squares> board) {
         squares = board.stream()
                 .map(Squares::getPieces)
                 .map(KindMapper::mapToStrings)
                 .collect(Collectors.toList());
 
         Collections.reverse(squares);
+    }
+
+    public static BoardDTO from(final List<Squares> board) {
+        return new BoardDTO(board);
     }
 
     public List<List<String>> getSquares() {

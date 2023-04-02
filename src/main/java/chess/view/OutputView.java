@@ -1,7 +1,5 @@
 package chess.view;
 
-import chess.domain.piece.Color;
-
 import java.util.List;
 
 public final class OutputView {
@@ -31,12 +29,8 @@ public final class OutputView {
         System.out.println(e.getMessage());
     }
 
-    public void printGuideMessage() {
+    public void printInputAgainMessage() {
         System.out.println("명령어를 다시 입력하세요");
-    }
-
-    public void printResult(Color turn) {
-        System.out.println(turn + "의 패배입니다.");
     }
 
     public void printStatus(final double calculateWhiteScore, final double calculateBlackScore) {

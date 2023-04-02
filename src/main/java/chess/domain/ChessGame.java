@@ -32,8 +32,8 @@ public final class ChessGame {
         state = state.move(source, target);
     }
 
-    public Color winner() {
-        return state.winner();
+    public String getWinner() {
+        return state.winner().name();
     }
 
     public double calculateWhiteScore() {

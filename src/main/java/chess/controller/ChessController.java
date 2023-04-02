@@ -37,7 +37,7 @@ public final class ChessController {
             playTurn(chessGame, commands);
         }
 
-        outputView.printWinner(chessGame.winner().name());
+        outputView.printWinner(chessGame.getWinner());
     }
 
     private void playTurn(ChessGame chessGame, Commands commands) {
@@ -47,10 +47,11 @@ public final class ChessController {
 
             command.execute(input);
 
-            outputView.printBoard(new BoardDTO(chessGame.getSquares()));
+            outputView.printBoard(BoardDTO.from(chessGame.getSquares()));
             printIfPrintable(command);
         } catch (IllegalArgumentException e) {
             outputView.printErrorMessage(e);
+            outputView.printInputAgainMessage();
             playTurn(chessGame, commands);
         }
     }
