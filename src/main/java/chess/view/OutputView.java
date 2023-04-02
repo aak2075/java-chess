@@ -1,6 +1,5 @@
 package chess.view;
 
-import chess.controller.state.BoardDTO;
 import chess.domain.piece.Color;
 
 import java.util.List;

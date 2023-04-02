@@ -1,7 +1,6 @@
-package chess.controller.state;
+package chess.view;
 
 import chess.domain.board.Squares;
-import chess.view.KindMapper;
 
 import java.util.Collections;
 import java.util.List;

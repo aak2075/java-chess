@@ -1,6 +1,6 @@
 package chess.domain.board;
 
-import chess.controller.state.BoardDTO;
+import chess.view.BoardDTO;
 import chess.domain.piece.Color;
 import chess.view.OutputView;
 import org.junit.jupiter.api.DisplayName;

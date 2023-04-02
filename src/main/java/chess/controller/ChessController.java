@@ -6,7 +6,7 @@ import chess.controller.command.action.MoveCommand;
 import chess.controller.command.action.StartCommand;
 import chess.controller.command.printable.PrintableCommand;
 import chess.controller.command.printable.StatusCommand;
-import chess.controller.state.BoardDTO;
+import chess.view.BoardDTO;
 import chess.domain.ChessGame;
 import chess.view.InputView;
 import chess.view.OutputView;
