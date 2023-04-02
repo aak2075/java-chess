@@ -8,13 +8,13 @@ public class ChessGameEntity {
     private final String userName;
     private final String gameTurn;
 
-    public ChessGameEntity(String userName, String gameTurn) {
+    public ChessGameEntity(final String userName, final String gameTurn) {
         this.gameId = GAME_NOT_EXIST_ID;
         this.userName = userName;
         this.gameTurn = gameTurn;
     }
 
-    public ChessGameEntity(int gameId, String userName, String gameTurn) {
+    public ChessGameEntity(final int gameId, final String userName, final String gameTurn) {
         this.gameId = gameId;
         this.userName = userName;
         this.gameTurn = gameTurn;

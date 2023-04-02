@@ -30,7 +30,10 @@ public class ChessGameRepository {
         );
     }
 
-    private Board createBoard(List<String> classNames, List<String> squareFiles, List<String> squareRanks, List<String> pieceColors) {
+    private Board createBoard(final List<String> classNames,
+                              final List<String> squareFiles,
+                              final List<String> squareRanks,
+                              final List<String> pieceColors) {
         final var board = new Board();
 
         for (int i = 0, end = File.values().length * Rank.values().length; i < end; i++) {
@@ -44,16 +47,10 @@ public class ChessGameRepository {
         return board;
     }
 
-    public Color findTurnByUserName(String userName) {
+    public Color findTurnByUserName(final String userName) {
         ChessGameEntity chessGameEntity = chessDAO.selectChessGame(userName);
 
         return Color.valueOf(chessGameEntity.getGameTurn());
-    }
-
-    public boolean hasGame(String userName) {
-        ChessGameEntity chessGameEntity = chessDAO.selectChessGame(userName);
-
-        return chessGameEntity != null;
     }
 
     public void saveGame(final Board board, final String userName, final Color turn) {
@@ -71,7 +68,13 @@ public class ChessGameRepository {
         chessDAO.saveBoard(chessGameEntity.getGameId(), boardEntity);
     }
 
-    private BoardEntity mapToBoardEntity(Board board) {
+    public boolean hasGame(final String userName) {
+        ChessGameEntity chessGameEntity = chessDAO.selectChessGame(userName);
+
+        return chessGameEntity != null;
+    }
+
+    private BoardEntity mapToBoardEntity(final Board board) {
 
         var classNames = new ArrayList<String>();
         var pieceFiles = new ArrayList<String>();

@@ -17,18 +17,18 @@ public final class OutputView {
         System.out.println("> 게임 이동 : move source위치 target위치 - 예. move b2 b3");
     }
 
-    public void printBoard(BoardDTO boardDTO) {
+    public void printBoard(final BoardDTO boardDTO) {
         List<List<String>> board = boardDTO.getSquares();
         board.forEach(this::printRank);
     }
 
-    private void printRank(List<String> rank) {
+    private void printRank(final List<String> rank) {
         String format = String.join(DELIMITER, rank);
 
         System.out.println(format);
     }
 
-    public void printErrorMesage(RuntimeException e) {
+    public void printErrorMessage(final RuntimeException e) {
         System.out.println(e.getMessage());
     }
 
@@ -40,12 +40,12 @@ public final class OutputView {
         System.out.println(turn + "의 패배입니다.");
     }
 
-    public void printStatus(double calculateWhiteScore, double calculateBlackScore) {
+    public void printStatus(final double calculateWhiteScore, final double calculateBlackScore) {
         System.out.println("흰색의 점수 : " + calculateWhiteScore);
         System.out.println("흑색의 점수 : " + calculateBlackScore);
     }
 
-    public void printWinner(String name) {
+    public void printWinner(final String name) {
         System.out.println("승자는 : " + name);
     }
 }

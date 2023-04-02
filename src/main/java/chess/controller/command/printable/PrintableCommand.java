@@ -1,5 +1,6 @@
-package chess.controller.command;
+package chess.controller.command.printable;
 
+import chess.controller.command.AbstractCommand;
 import chess.domain.ChessGame;
 
 public abstract class PrintableCommand extends AbstractCommand {

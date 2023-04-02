@@ -1,5 +1,6 @@
-package chess.controller.command;
+package chess.controller.command.action;
 
+import chess.controller.command.AbstractCommand;
 import chess.domain.ChessGame;
 
 public abstract class ActionCommand extends AbstractCommand {

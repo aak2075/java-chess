@@ -11,7 +11,7 @@ public class BoardDTO {
 
     private final List<List<String>> squares;
 
-    public BoardDTO(List<Squares> board) {
+    public BoardDTO(final List<Squares> board) {
         squares = board.stream()
                 .map(Squares::getPieces)
                 .map(KindMapper::mapToStrings)

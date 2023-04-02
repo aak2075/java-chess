@@ -1,6 +1,11 @@
 package chess.controller;
 
 import chess.controller.command.*;
+import chess.controller.command.action.EndCommand;
+import chess.controller.command.action.MoveCommand;
+import chess.controller.command.action.StartCommand;
+import chess.controller.command.printable.PrintableCommand;
+import chess.controller.command.printable.StatusCommand;
 import chess.controller.state.BoardDTO;
 import chess.domain.ChessGame;
 import chess.view.InputView;
@@ -43,14 +48,14 @@ public final class ChessController {
             command.execute(input);
 
             outputView.printBoard(new BoardDTO(chessGame.getSquares()));
-            printable(command);
+            printIfPrintable(command);
         } catch (IllegalArgumentException e) {
-            outputView.printErrorMesage(e);
+            outputView.printErrorMessage(e);
             playTurn(chessGame, commands);
         }
     }
 
-    private void printable(Command command) {
+    private void printIfPrintable(Command command) {
 
         if (command.isPrintable()) {
             PrintableCommand printableCommand = (PrintableCommand) command;

@@ -1,4 +1,4 @@
-package chess.controller.command;
+package chess.controller.command.action;
 
 import chess.controller.dao.JdbcDAO;
 import chess.domain.ChessGame;
@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class StartCommand extends ActionCommand {
 
+    private static final int FIRST_INDEX = 1;
     private final String command = "start";
 
     public StartCommand(ChessGame chessGame) {
@@ -26,7 +27,7 @@ public class StartCommand extends ActionCommand {
 
         ChessGameRepository chessGameRepository = new ChessGameRepository(new JdbcDAO());
 
-        String userName = inputs.get(1);
+        String userName = inputs.get(FIRST_INDEX);
 
         if (chessGameRepository.hasGame(userName)) {
             Board board = chessGameRepository.findBoardByUserName(userName);

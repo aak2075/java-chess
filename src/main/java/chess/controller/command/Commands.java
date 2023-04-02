@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class Commands {
 
+    private static final String DELIMITER = " ";
     private final Map<String, Command> commands;
 
     public Commands(List<Command> commands) {
@@ -16,7 +17,7 @@ public class Commands {
     }
 
     public Command findCommand(String input) {
-        List<String> inputs = Arrays.stream(input.split(" "))
+        List<String> inputs = Arrays.stream(input.split(DELIMITER))
                 .collect(Collectors.toList());
 
         return commands.getOrDefault(inputs.get(0), new IllegalCommand());

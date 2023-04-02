@@ -1,4 +1,4 @@
-package chess.controller.command;
+package chess.controller.command.action;
 
 import chess.controller.dao.JdbcDAO;
 import chess.domain.ChessGame;

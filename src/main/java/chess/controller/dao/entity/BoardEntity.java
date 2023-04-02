@@ -9,7 +9,10 @@ public class BoardEntity {
     private final List<String> squareRanks;
     private final List<String> pieceColors;
 
-    public BoardEntity(List<String> classNames, List<String> squareFiles, List<String> squareRanks, List<String> pieceColors) {
+    public BoardEntity(final List<String> classNames,
+                       final List<String> squareFiles,
+                       final List<String> squareRanks,
+                       final List<String> pieceColors) {
         this.classNames = List.copyOf(classNames);
         this.squareFiles = List.copyOf(squareFiles);
         this.squareRanks = List.copyOf(squareRanks);

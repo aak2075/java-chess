@@ -5,15 +5,15 @@ import chess.controller.dao.entity.ChessGameEntity;
 
 public interface ChessDAO {
 
-    void saveBoard(int gameId, BoardEntity boardEntity);
+    void saveBoard(final int gameId, final BoardEntity boardEntity);
 
-    ChessGameEntity selectChessGame(String userName);
+    ChessGameEntity selectChessGame(final String userName);
 
-    BoardEntity selectBoard(int gameId);
+    BoardEntity selectBoard(final int gameId);
 
     void updateBoard(final int gameId, final BoardEntity boardEntity);
 
-    void saveGame(ChessGameEntity chessGameEntity);
+    void saveGame(final ChessGameEntity chessGameEntity);
 
-    void updateGame(ChessGameEntity chessGameEntity);
+    void updateGame(final ChessGameEntity chessGameEntity);
 }

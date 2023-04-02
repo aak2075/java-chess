@@ -12,7 +12,7 @@ import java.util.List;
 public class JdbcDAO implements ChessDAO {
 
     @Override
-    public void saveBoard(int gameId, BoardEntity boardEntity) {
+    public void saveBoard(final int gameId, final BoardEntity boardEntity) {
 
         final var query = "INSERT INTO board(game_id, class_name, piece_file, piece_rank, piece_color) VALUES(?, ?, ?, ?, ?)";
 
@@ -42,7 +42,7 @@ public class JdbcDAO implements ChessDAO {
     }
 
     @Override
-    public ChessGameEntity selectChessGame(String userName) {
+    public ChessGameEntity selectChessGame(final String userName) {
 
         final var query = "SELECT game_id, user_name, game_turn FROM chess_game WHERE user_name = ?";
 
@@ -67,7 +67,7 @@ public class JdbcDAO implements ChessDAO {
     }
 
     @Override
-    public void saveGame(ChessGameEntity chessGameEntity) {
+    public void saveGame(final ChessGameEntity chessGameEntity) {
         final var query = "INSERT INTO chess_game(user_name, game_turn) values(?, ?)";
 
         try (final var connection = Loader.getConnection();
@@ -84,7 +84,7 @@ public class JdbcDAO implements ChessDAO {
     }
 
     @Override
-    public BoardEntity selectBoard(int gameId) {
+    public BoardEntity selectBoard(final int gameId) {
 
         final var query = "SELECT class_name, piece_file, piece_rank, piece_color FROM board WHERE game_id = ?";
 
@@ -146,7 +146,7 @@ public class JdbcDAO implements ChessDAO {
     }
 
     @Override
-    public void updateGame(ChessGameEntity chessGameEntity) {
+    public void updateGame(final ChessGameEntity chessGameEntity) {
 
         final var query = "UPDATE chess_game SET game_turn = ? WHERE game_id = ?";
         try (final var connection = Loader.getConnection();
