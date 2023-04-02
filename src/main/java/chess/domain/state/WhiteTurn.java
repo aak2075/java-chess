@@ -16,16 +16,11 @@ public final class WhiteTurn extends Running {
     public State move(Position source, Position target) {
         board.play(source, target, color);
 
-        if (board.isKingDead(color)) {
+        if (board.isKingDead(color.getOppsiteColor())) {
             return new BlackWin(board);
         }
 
         return new BlackTurn(board);
-    }
-
-    @Override
-    public void end() {
-
     }
 
     @Override

@@ -14,9 +14,7 @@ public interface State {
 
     Color winner();
 
-    void end();
-
-    boolean isRunning();
+    State end();
 
     Color getTurn();
 

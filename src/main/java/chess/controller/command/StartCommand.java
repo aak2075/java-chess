@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StartCommand extends AbstractCommand {
+public class StartCommand extends ActionCommand {
 
     private final String command = "start";
 

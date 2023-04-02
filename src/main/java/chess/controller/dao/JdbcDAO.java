@@ -71,7 +71,7 @@ public class JdbcDAO implements ChessDAO {
         final var query = "INSERT INTO chess_game(user_name, game_turn) values(?, ?)";
 
         try (final var connection = Loader.getConnection();
-            final var preparedStatement = connection.prepareStatement(query)) {
+             final var preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, chessGameEntity.getUserName());
             preparedStatement.setString(2, chessGameEntity.getGameTurn());
@@ -98,7 +98,7 @@ public class JdbcDAO implements ChessDAO {
 
             preparedStatement.setInt(1, gameId);
 
-            ResultSet resultSet = preparedStatement.executeQuery(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 classNames.add(resultSet.getString("class_name"));
@@ -108,6 +108,7 @@ public class JdbcDAO implements ChessDAO {
             }
 
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException();
         }
 
@@ -117,7 +118,7 @@ public class JdbcDAO implements ChessDAO {
     @Override
     public void updateBoard(final int gameId, final BoardEntity boardEntity) {
 
-        final var query = "UPDATE board SET class_name = ?, piece_file = ?, piece_rank = ?, piece_color = ? WHERE game_id = ?";
+        final var query = "UPDATE board SET class_name = ?, piece_color = ? WHERE game_id = ? && piece_file = ? && piece_rank = ?";
 
         try (final var connection = Loader.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -130,10 +131,10 @@ public class JdbcDAO implements ChessDAO {
             for (int i = 0, end = classNames.size(); i < end; i++) {
 
                 preparedStatement.setString(1, classNames.get(i));
-                preparedStatement.setString(2, squareFiles.get(i));
-                preparedStatement.setString(3, squareRanks.get(i));
-                preparedStatement.setString(4, pieceColors.get(i));
-                preparedStatement.setInt(5, gameId);
+                preparedStatement.setString(2, pieceColors.get(i));
+                preparedStatement.setInt(3, gameId);
+                preparedStatement.setString(4, squareFiles.get(i));
+                preparedStatement.setString(5, squareRanks.get(i));
 
                 preparedStatement.addBatch();
             }
@@ -148,9 +149,8 @@ public class JdbcDAO implements ChessDAO {
     public void updateGame(ChessGameEntity chessGameEntity) {
 
         final var query = "UPDATE chess_game SET game_turn = ? WHERE game_id = ?";
-
         try (final var connection = Loader.getConnection();
-        final var preparedStatement = connection.prepareStatement(query)) {
+             final var preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.setString(1, chessGameEntity.getGameTurn());
             preparedStatement.setInt(2, chessGameEntity.getGameId());

@@ -2,9 +2,9 @@ package chess.controller.command;
 
 import chess.domain.ChessGame;
 
-public class StatusCommand extends AbstractCommand{
+public class StatusCommand extends PrintableCommand {
 
-    public static final String command = "status";
+    private static final String command = "status";
 
     public StatusCommand(ChessGame chessGame) {
         super(chessGame);
@@ -12,8 +12,16 @@ public class StatusCommand extends AbstractCommand{
 
     @Override
     public void execute(String input) {
-        chessGame.calculateWhiteScore();
-        chessGame.calculateBlackScore();
+    }
+
+    @Override
+    public double getWhiteScore() {
+        return chessGame.calculateWhiteScore();
+    }
+
+    @Override
+    public double getBlackScore() {
+        return chessGame.calculateBlackScore();
     }
 
     @Override

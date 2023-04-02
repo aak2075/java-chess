@@ -31,11 +31,6 @@ public abstract class Finished extends Started {
     }
 
     @Override
-    public void end() {
-
-    }
-
-    @Override
     public double calculateWhiteScore() {
         return board.calculateTotalScore(Color.WHITE);
     }
@@ -43,11 +38,6 @@ public abstract class Finished extends Started {
     @Override
     public double calculateBlackScore() {
         return board.calculateTotalScore(Color.BLACK);
-    }
-
-    @Override
-    public boolean isRunning() {
-        return false;
     }
 
     @Override

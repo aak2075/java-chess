@@ -7,10 +7,17 @@ public enum Color {
     NONE;
 
     public boolean isBlack() {
-        return this.equals(BLACK);
+        return this == BLACK;
     }
 
     public boolean isWhite() {
-        return this.equals(WHITE);
+        return this == WHITE;
+    }
+
+    public Color getOppsiteColor() {
+        if (isBlack()) {
+            return WHITE;
+        }
+        return BLACK;
     }
 }

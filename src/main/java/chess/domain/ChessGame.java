@@ -2,9 +2,12 @@ package chess.domain;
 
 import chess.domain.board.Board;
 import chess.domain.board.Position;
+import chess.domain.board.Squares;
 import chess.domain.piece.Color;
 import chess.domain.state.Ready;
 import chess.domain.state.State;
+
+import java.util.List;
 
 public final class ChessGame {
 
@@ -58,11 +61,19 @@ public final class ChessGame {
         return state.getBoard();
     }
 
+    public List<Squares> getSquares() {
+        return state.getBoard().getSquares();
+    }
+
     public boolean isFinished() {
         return state.isFinished();
     }
 
     public String getUserName() {
         return userName;
+    }
+
+    public void finish() {
+        state = state.end();
     }
 }

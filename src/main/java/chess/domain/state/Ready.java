@@ -31,6 +31,11 @@ public final class Ready implements State {
     }
 
     @Override
+    public State end() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public double calculateWhiteScore() {
         throw new UnsupportedOperationException();
     }
@@ -38,16 +43,6 @@ public final class Ready implements State {
     @Override
     public double calculateBlackScore() {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void end() {
-
-    }
-
-    @Override
-    public boolean isRunning() {
-        return false;
     }
 
     @Override

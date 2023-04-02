@@ -1,9 +1,8 @@
 package chess.domain.state;
 
-import chess.domain.ChessGame;
 import chess.domain.board.Board;
 
-public abstract class Started implements State{
+public abstract class Started implements State {
 
     protected final Board board;
 
@@ -13,5 +12,10 @@ public abstract class Started implements State{
 
     public Board getBoard() {
         return board;
+    }
+
+    @Override
+    public State end() {
+        return new End(board);
     }
 }

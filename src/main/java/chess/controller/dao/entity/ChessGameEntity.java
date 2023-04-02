@@ -2,12 +2,14 @@ package chess.controller.dao.entity;
 
 public class ChessGameEntity {
 
+    private static final int GAME_NOT_EXIST_ID = -1;
+
     private final int gameId;
     private final String userName;
     private final String gameTurn;
 
     public ChessGameEntity(String userName, String gameTurn) {
-        this.gameId = -1;
+        this.gameId = GAME_NOT_EXIST_ID;
         this.userName = userName;
         this.gameTurn = gameTurn;
     }

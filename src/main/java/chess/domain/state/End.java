@@ -11,6 +11,6 @@ public class End extends Finished {
 
     @Override
     public Color winner() {
-        throw new UnsupportedOperationException();
+        return Color.NONE;
     }
 }

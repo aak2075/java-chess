@@ -1,6 +1,5 @@
 package chess.domain.state;
 
-import chess.domain.ChessGame;
 import chess.domain.board.Board;
 import chess.domain.piece.Color;
 
@@ -33,11 +32,6 @@ public abstract class Running extends Started {
     @Override
     public double calculateBlackScore() {
         return board.calculateTotalScore(Color.BLACK);
-    }
-
-    @Override
-    public boolean isRunning() {
-        return true;
     }
 
     @Override

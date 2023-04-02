@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MoveCommand extends AbstractCommand {
+public class MoveCommand extends ActionCommand {
 
     private final String command = "move";
 
@@ -20,8 +20,6 @@ public class MoveCommand extends AbstractCommand {
     public void execute(String input) {
         List<String> inputs = Arrays.stream(input.split(" "))
                 .collect(Collectors.toList());
-
-        // validate(input);
 
         Position source = PositionParser.parse(inputs.get(1));
         Position target = PositionParser.parse(inputs.get(2));

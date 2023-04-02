@@ -61,7 +61,7 @@ public class ChessGameRepository {
         if (hasGame(userName)) {
             ChessGameEntity chessGameEntity = chessDAO.selectChessGame(userName);
             int gameId = chessGameEntity.getGameId();
-            chessDAO.updateGame(new ChessGameEntity(userName, turn.name()));
+            chessDAO.updateGame(new ChessGameEntity(gameId, userName, turn.name()));
             chessDAO.updateBoard(gameId, boardEntity);
             return;
         }

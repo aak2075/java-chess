@@ -27,13 +27,34 @@ public final class ChessController {
         ));
 
         outputView.startMessage();
-        while (true) {
+
+        while (!chessGame.isFinished()) {
+            playTurn(chessGame, commands);
+        }
+
+        outputView.printWinner(chessGame.winner().name());
+    }
+
+    private void playTurn(ChessGame chessGame, Commands commands) {
+        try {
             String input = inputView.inputCommand();
             Command command = commands.findCommand(input);
-            command.execute(input);
-            outputView.printBoard(new BoardDTO(chessGame.getBoard().getSquares()));
 
-            if (command.getCommand().equals("end")) return;
+            command.execute(input);
+
+            outputView.printBoard(new BoardDTO(chessGame.getSquares()));
+            printable(command);
+        } catch (IllegalArgumentException e) {
+            outputView.printErrorMesage(e);
+            playTurn(chessGame, commands);
+        }
+    }
+
+    private void printable(Command command) {
+
+        if (command.isPrintable()) {
+            PrintableCommand printableCommand = (PrintableCommand) command;
+            outputView.printStatus(printableCommand.getWhiteScore(), printableCommand.getBlackScore());
         }
     }
 }

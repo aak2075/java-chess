@@ -45,6 +45,7 @@ public final class BlackPawn extends Pawn {
             throw new IllegalArgumentException(CAN_NOT_MOVE_EXCEPTION_MESSAGE);
         }
     }
+
     @Override
     public double getScore(Color color) {
         if (color == this.color) {
